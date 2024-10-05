@@ -7,6 +7,8 @@ import com.example.car_pooling.Repository.TripRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class BookingManager {
 
@@ -17,9 +19,11 @@ public class BookingManager {
     TripRepository tripRepository;
 
     public void bookTrip(Booking booking) {
-        Trip trip = tripRepository.getTripById(booking.getTripId());
-        trip.setAvailableSeats(trip.getAvailableSeats() - booking.getSeatsBooked());
-        tripRepository.upsertTrip(trip);
+        List<Trip> trips = tripRepository.getTripsByIds(booking.getTripIds());
+        trips.forEach( trip -> {
+                    trip.setAvailableSeats(trip.getAvailableSeats() - booking.getSeatsBooked());
+                    tripRepository.upsertTrip(trip);
+                });
         bookingRepository.addBooking(booking);
     }
 

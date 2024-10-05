@@ -1,11 +1,14 @@
 package com.example.car_pooling.Repository;
 
 import com.example.car_pooling.Entities.Booking;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
+@Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
 public class BookingRepository {
 
     private final List<Booking> bookings = new ArrayList<>();
@@ -30,16 +33,5 @@ public class BookingRepository {
                 .collect(Collectors.toList());
     }
 
-    // Find bookings by trip ID
-    public List<Booking> getBookingsByTripId(Integer tripId) {
-        return bookings.stream()
-                .filter(booking -> booking.getTripId().equals(tripId))
-                .collect(Collectors.toList());
-    }
-
-    // Get all bookings
-    public List<Booking> getAllBookings() {
-        return new ArrayList<>(bookings);
-    }
 }
 

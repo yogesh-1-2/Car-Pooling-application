@@ -2,12 +2,15 @@ package com.example.car_pooling.Repository;
 
 import com.example.car_pooling.Entities.Enums.AssetType;
 import com.example.car_pooling.Entities.UserResources;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
+@Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
 public class UserResourceRepository {
     private final List<UserResources> resources;
 

@@ -1,9 +1,14 @@
 package com.example.car_pooling.Service;
 
+import com.example.car_pooling.DTO.TripFilteringRequestDto;
 import com.example.car_pooling.Entities.Address;
+import com.example.car_pooling.Entities.Enums.TripSelectionEnums;
 import com.example.car_pooling.Entities.Trip;
 import com.example.car_pooling.Exceptions.TripExceptions;
 import com.example.car_pooling.Manager.TripManager;
+import com.example.car_pooling.Service.Strategy.StrategyInterfaces.TripFilteringStrategy;
+import com.example.car_pooling.Service.Strategy.TripFilteringByVacancyStrategy;
+import com.example.car_pooling.Service.Strategy.TripFilteringByVehicleStrategy;
 import com.example.car_pooling.Util.Constants;
 import com.example.car_pooling.Validations.TripValidation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +50,25 @@ public class TripService {
 
     public List<Trip> getAllTripByUserId(Integer userId) {
         return tripManager.getAllTripByUserId(userId);
+    }
+
+    public List<Trip> searchTrip(Integer originStateCode, Integer destinationStateCode, TripSelectionEnums tripSelectionStrategy, String vehicleType, Integer seats) {
+        //validation to be included
+        TripFilteringStrategy tripFilteringStrategy = new TripFilteringByVacancyStrategy();
+        String requiredVehicleType = "";
+        if (tripSelectionStrategy.equals(TripSelectionEnums.PREFERRED_VEHICLE)) {
+            tripFilteringStrategy = new TripFilteringByVehicleStrategy();
+            requiredVehicleType = vehicleType;
+        }
+
+        TripFilteringRequestDto
+                tripFilterRequest = TripFilteringRequestDto.builder()
+                .originStateCode(originStateCode)
+                .destinationStateCode(destinationStateCode)
+                .seatsAvailable(seats)
+                .vehicleType(requiredVehicleType)
+                .build();
+        return tripFilteringStrategy.filterTrips(tripFilterRequest);
     }
 
     private int getStateCode(String state) {

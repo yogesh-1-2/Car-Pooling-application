@@ -24,4 +24,15 @@ public class TripManager {
     public List<Trip> getAllTripByUserId(Integer userId) {
         return tripRepository.getAllTripByUserId(userId);
     }
+
+    public List<Trip> getActiveTripsByOrignDest(Integer originState, Integer destinationState) {
+        List<Trip> trips = tripRepository.getTripsByOriginDest(originState, destinationState);
+        trips = trips.stream().filter(trip -> {
+            if (trip.getEndTime() > 0) {
+                return false;
+            }
+            return true;
+        }).toList();
+        return trips;
+    }
 }

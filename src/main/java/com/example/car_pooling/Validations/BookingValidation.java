@@ -21,18 +21,19 @@ public class BookingValidation {
             throw new BookingExceptions.BookingNotFoundException();
         }
 
-        Trip trip = tripManager.getTripById(booking.getTripId());
+        for (Integer tripId : booking.getTripIds()) {
+            Trip trip = tripManager.getTripById(tripId);
+            if (Objects.isNull(trip)) {
+                throw new TripExceptions.TripNotFoundException();
+            }
 
-        if (Objects.isNull(trip)) {
-            throw new TripExceptions.TripNotFoundException();
-        }
+            if (trip.getOwnerId().equals(booking.getUserId())) {
+                throw new BookingExceptions.InvalidBookingUserException();
+            }
 
-        if (trip.getOwnerId().equals(booking.getUserId())) {
-            throw new BookingExceptions.InvalidBookingUserException();
-        }
-
-        if (trip.getAvailableSeats() < booking.getSeatsBooked()) {
-            throw new BookingExceptions.SeatsNotAvailableException();
+            if (trip.getAvailableSeats() < booking.getSeatsBooked()) {
+                throw new BookingExceptions.SeatsNotAvailableException();
+            }
         }
     }
 }

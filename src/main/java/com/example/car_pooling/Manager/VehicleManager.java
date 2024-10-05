@@ -28,4 +28,7 @@ public class VehicleManager {
         return vehicleRepository.getVehicles(vehicleIds);
     }
 
+    public Vehicle getVehicleByNumber(String vehicleNumber){
+        return vehicleRepository.getVehicleByNumber(vehicleNumber);
+    }
 }

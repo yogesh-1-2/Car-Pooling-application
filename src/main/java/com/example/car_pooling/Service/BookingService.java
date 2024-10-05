@@ -7,6 +7,8 @@ import com.example.car_pooling.Validations.BookingValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class BookingService {
 
@@ -16,10 +18,10 @@ public class BookingService {
     @Autowired
     BookingValidation bookingValidation;
 
-    public void bookTrip(Integer userId, Integer tripId, Integer seatsBooked) {
+    public void bookTrip(Integer userId, List<Integer> tripIds, Integer seatsBooked) {
         Booking booking = new Booking();
         booking.setUserId(userId);
-        booking.setTripId(tripId);
+        booking.setTripIds(tripIds);
         booking.setSeatsBooked(seatsBooked);
         bookingValidation.validateBooking(booking);
         bookingManager.bookTrip(booking);

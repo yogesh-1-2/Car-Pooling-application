@@ -3,6 +3,8 @@ package com.example.car_pooling.Repository;
 import com.example.car_pooling.Entities.User;
 import com.example.car_pooling.Exceptions.UserExceptions;
 import lombok.Data;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -10,6 +12,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Component
+@Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
 public class UserRepository {
     private List<User> users;
     private int        nextId;

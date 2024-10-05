@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/trip/bookings")
 public class BookingController {
@@ -21,11 +23,11 @@ public class BookingController {
     @Autowired
     BookingService bookingService;
 
-    @PostMapping("/book/{tripId}")
-    public ResponseEntity<HttpStatus> bookTrip(@PathVariable Integer tripId, @RequestParam Integer userId, @RequestParam Integer seatsBooked) {
+    @PostMapping("/book")
+    public ResponseEntity<HttpStatus> bookTrip(@RequestParam List<Integer> tripIds, @RequestParam Integer userId, @RequestParam Integer seatsBooked) {
         userValidation.validateUser(userId);
-        tripValidation.validateTrip(tripId);
-        bookingService.bookTrip(tripId, userId, seatsBooked);
+        tripValidation.validateTrip(tripIds);
+        bookingService.bookTrip(userId, tripIds, seatsBooked);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 }

@@ -1,6 +1,8 @@
 package com.example.car_pooling.Repository;
 
 import com.example.car_pooling.Entities.Vehicle;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -8,6 +10,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Component
+@Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
 public class VehicleRepository {
     private final List<Vehicle> vehicles;
     private       int           counter = 0;
@@ -54,5 +57,14 @@ public class VehicleRepository {
             }
         }
         return vehicleList;
+    }
+
+    public Vehicle getVehicleByNumber(String vehicleNumber){
+        for(Vehicle vehicle: vehicles){
+            if(vehicle.getVehicleNumber().equals(vehicleNumber)){
+                return vehicle;
+            }
+        }
+        return null;
     }
 }

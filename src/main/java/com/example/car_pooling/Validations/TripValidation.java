@@ -10,6 +10,7 @@ import lombok.experimental.UtilityClass;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Objects;
 
 @Component
@@ -30,6 +31,14 @@ public class TripValidation {
         if (Objects.isNull(trip)) {
             throw new TripExceptions.TripNotFoundException();
         }
+    }
+
+    public void validateTrip(List<Integer> tripIds) {
+        if (Objects.isNull(tripIds)) {
+            throw new TripExceptions.TripNotFoundException();
+        }
+
+        tripIds.forEach(this::validateTrip);
     }
 
     public void validateTrip(Trip trip) {
