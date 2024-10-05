@@ -21,6 +21,17 @@ public class TripValidation {
     @Autowired
     private TripManager tripManager;
 
+    public void validateTrip(Integer tripId) {
+        if (Objects.isNull(tripId)) {
+            throw new TripExceptions.TripNotFoundException();
+        }
+
+        Trip trip = tripManager.getTripById(tripId);
+        if (Objects.isNull(trip)) {
+            throw new TripExceptions.TripNotFoundException();
+        }
+    }
+
     public void validateTrip(Trip trip) {
         if (Objects.isNull(trip)) {
             throw new TripExceptions.TripNotFoundException();

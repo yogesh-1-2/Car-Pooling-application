@@ -19,6 +19,7 @@ public class VehicleRepository {
     public void addVehicle(Vehicle vehicle){
         if (Objects.isNull(vehicle.getId())) {
             vehicle.setId(counter++);
+            vehicles.add(vehicle);
         } else {
             for (int i = 0; i < vehicles.size(); i++) {
                 if (vehicles.get(i).getId().equals(vehicle.getId())) {
@@ -26,7 +27,6 @@ public class VehicleRepository {
                 }
             }
         }
-        vehicles.add(vehicle);
     }
 
     public void removeVehicle(Vehicle vehicle){
