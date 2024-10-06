@@ -6,17 +6,19 @@ import com.example.car_pooling.Manager.TripManager;
 import com.example.car_pooling.Service.Strategy.StrategyInterfaces.RoutingStrategy;
 import com.example.car_pooling.Service.Strategy.StrategyInterfaces.TripFilteringStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class TripFilteringByVacancyStrategy implements TripFilteringStrategy {
 
     @Autowired
-    private TripManager tripManager;
+    private MutiRouteStrategy multiRouteStrategy;
 
     @Override
     public List<Trip> filterTrips(TripFilteringRequestDto tripFilterRequest) {
-        RoutingStrategy routingStrategy = new MutiRouteStrategy();
+        RoutingStrategy routingStrategy = multiRouteStrategy;
         List<List<Trip>> trips = routingStrategy.getRoute(
                 tripFilterRequest.getOriginStateCode(),
                 tripFilterRequest.getDestinationStateCode(),

@@ -1,5 +1,6 @@
 package com.example.car_pooling.Repository;
 
+import com.example.car_pooling.Entities.Booking;
 import com.example.car_pooling.Entities.Enums.AssetType;
 import com.example.car_pooling.Entities.UserResources;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Repository
 @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
@@ -19,6 +21,11 @@ public class UserResourceRepository {
     }
 
     public void addResource(UserResources resource){
+        for (UserResources userResources : resources) {
+            if (Objects.equals(userResources.getAssetId(), resource.getAssetId())) {
+                return;
+            }
+        }
         resources.add(resource);
     }
 

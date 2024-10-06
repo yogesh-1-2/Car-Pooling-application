@@ -67,6 +67,14 @@ public class TripValidation {
         if (Boolean.FALSE.equals(ownerId.equals(userId))) {
             throw new TripExceptions.TripWrongVehicle(trip.getVehicleNumber());
         }
+
+        List<Trip> trips = tripManager.getActiveTripsByOrignDest(trip.getOrigin().getStateCode(), trip.getDestination().getStateCode());
+        for (Trip existingTrip : trips) {
+            if (Objects.isNull(existingTrip.getEndTime()) &&
+                    Objects.equals(existingTrip.getVehicleNumber(), trip.getVehicleNumber())) {
+                    throw new TripExceptions.TripVehicleAlreadyInUse(trip.getVehicleNumber());
+            }
+        }
     }
 
     public void validateAddress(Address address) {

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Objects;
 
 @Component
 public class TripManager {
@@ -28,11 +29,15 @@ public class TripManager {
     public List<Trip> getActiveTripsByOrignDest(Integer originState, Integer destinationState) {
         List<Trip> trips = tripRepository.getTripsByOriginDest(originState, destinationState);
         trips = trips.stream().filter(trip -> {
-            if (trip.getEndTime() > 0) {
+            if (Objects.nonNull(trip.getEndTime()) && trip.getEndTime() > 0) {
                 return false;
             }
             return true;
         }).toList();
         return trips;
+    }
+
+    public List<Trip> getAllActiveTrips() {
+        return tripRepository.getAllActiveTrips();
     }
 }

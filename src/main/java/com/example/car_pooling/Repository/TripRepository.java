@@ -86,4 +86,14 @@ public class TripRepository {
         }
         return requiredTrips;
     }
+
+    public List<Trip> getAllActiveTrips() {
+        List<Trip> requiredTrips = new ArrayList<>();
+        for(Trip trip: trips){
+            if (Objects.isNull(trip.getEndTime()) || trip.getEndTime() <= 0) {
+                requiredTrips.add(trip);
+            }
+        }
+        return requiredTrips;
+    }
 }

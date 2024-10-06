@@ -4,14 +4,15 @@ import com.example.car_pooling.Entities.Trip;
 import com.example.car_pooling.Manager.TripManager;
 import com.example.car_pooling.Service.Strategy.StrategyInterfaces.RoutingStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
+@Service
 public class SingleRouteStrategy implements RoutingStrategy {
 
     @Autowired
-    TripManager tripManager;
+    private TripManager tripManager;
 
     @Override
     public List<List<Trip>> getRoute(Integer originStateCode, Integer destinationStateCode, Integer seatsAvailable) {

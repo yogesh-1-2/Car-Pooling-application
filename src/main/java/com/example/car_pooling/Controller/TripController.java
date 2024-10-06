@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -37,6 +36,7 @@ public class TripController {
 
     @GetMapping("")
     public ResponseEntity<List<Trip>> getAllTrips(@RequestParam Integer userId) {
+        //need to change to get trips booked by user
         return new ResponseEntity<>(tripService.getAllTripByUserId(userId), HttpStatus.OK);
     }
 

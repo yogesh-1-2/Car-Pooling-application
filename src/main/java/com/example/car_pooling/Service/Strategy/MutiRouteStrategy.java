@@ -5,23 +5,25 @@ import com.example.car_pooling.Manager.TripManager;
 import com.example.car_pooling.Service.Strategy.StrategyInterfaces.RoutingStrategy;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+@Service
 public class MutiRouteStrategy implements RoutingStrategy {
 
     @AllArgsConstructor
-    private static class StateNode {
+    private class StateNode {
         public Integer stateCode;
         public List<Trip> trips;
     }
 
     @Autowired
-    TripManager tripManager;
+    private TripManager tripManager;
 
     @Override
     public List<List<Trip>> getRoute(Integer originStateCode, Integer destinationStateCode, Integer seatsAvailable) {
-        List<Trip> trips = tripManager.getActiveTripsByOrignDest(originStateCode, destinationStateCode);
+        List<Trip> trips = tripManager.getAllActiveTrips();
         trips = trips.stream()
                 .filter(trip -> trip.getAvailableSeats() >= seatsAvailable)
                 .toList();

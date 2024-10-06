@@ -12,6 +12,7 @@ import com.example.car_pooling.Service.Strategy.TripFilteringByVehicleStrategy;
 import com.example.car_pooling.Util.Constants;
 import com.example.car_pooling.Validations.TripValidation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -27,13 +28,19 @@ public class TripService {
     @Autowired
     private TripValidation tripValidation;
 
+    @Autowired
+    private TripFilteringByVacancyStrategy tripFilteringByVacancyStrategy;
+
+    @Autowired
+    private TripFilteringByVehicleStrategy tripFilteringByVehicleStrategy;
+
     public void createTrip(Trip trip, Integer ownerId) {
-        tripValidation.validateTrip(trip, ownerId);
         trip.setOwnerId(ownerId);
         Address origin = trip.getOrigin();
         Address destination = trip.getDestination();
         origin.setStateCode(getStateCode(origin.getState().trim().toLowerCase()));
         destination.setStateCode(getStateCode(destination.getState().trim().toLowerCase()));
+        tripValidation.validateTrip(trip, ownerId);
         tripManager.createOrModifyTrip(trip);
     }
 
@@ -54,10 +61,10 @@ public class TripService {
 
     public List<Trip> searchTrip(Integer originStateCode, Integer destinationStateCode, TripSelectionEnums tripSelectionStrategy, String vehicleType, Integer seats) {
         //validation to be included
-        TripFilteringStrategy tripFilteringStrategy = new TripFilteringByVacancyStrategy();
+        TripFilteringStrategy tripFilteringStrategy = tripFilteringByVacancyStrategy;
         String requiredVehicleType = "";
         if (tripSelectionStrategy.equals(TripSelectionEnums.PREFERRED_VEHICLE)) {
-            tripFilteringStrategy = new TripFilteringByVehicleStrategy();
+            tripFilteringStrategy = tripFilteringByVehicleStrategy;
             requiredVehicleType = vehicleType;
         }
 
