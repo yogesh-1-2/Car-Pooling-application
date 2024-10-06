@@ -10,6 +10,7 @@ import com.example.car_pooling.Service.Strategy.StrategyInterfaces.TripFiltering
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -29,7 +30,7 @@ public class TripFilteringByVehicleStrategy implements TripFilteringStrategy {
                 tripFilterRequest.getDestinationStateCode(),
                 tripFilterRequest.getSeatsAvailable());
         if (trips.isEmpty()) {
-            return null;
+            return Collections.emptyList();
         }
         for (List<Trip> tripRoute : trips) {
             boolean allVehiclesMatch = true;
@@ -45,6 +46,6 @@ public class TripFilteringByVehicleStrategy implements TripFilteringStrategy {
             }
         }
 
-        return null;
+        return Collections.emptyList();
     }
 }

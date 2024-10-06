@@ -12,9 +12,9 @@ import java.util.Objects;
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
 public class VehicleRepository {
-    private final List<Vehicle> vehicles;
+    private List<Vehicle> vehicles;
     private       int           counter = 0;
-    VehicleRepository() {
+    public VehicleRepository() {
         vehicles = new ArrayList<>();
         counter = 1;
     }
