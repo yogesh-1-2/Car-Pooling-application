@@ -8,6 +8,7 @@ import com.example.car_pooling.Service.Strategy.StrategyInterfaces.TripFiltering
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -24,7 +25,7 @@ public class TripFilteringByVacancyStrategy implements TripFilteringStrategy {
                 tripFilterRequest.getDestinationStateCode(),
                 tripFilterRequest.getSeatsAvailable());
         if (trips.isEmpty()) {
-            return null;
+            return Collections.emptyList();
         }
         List<Trip> mostVacantTrip = trips.get(0);
         for (List<Trip> tripList : trips) {
