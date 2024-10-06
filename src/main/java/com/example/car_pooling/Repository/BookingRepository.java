@@ -33,5 +33,8 @@ public class BookingRepository {
                 .collect(Collectors.toList());
     }
 
+    public List<Booking> getAllBookings() {
+        return bookings;
+    }
 }
 
