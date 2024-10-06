@@ -96,4 +96,8 @@ public class TripRepository {
         }
         return requiredTrips;
     }
+
+    public List<Trip> getAllTrips() {
+        return trips;
+    }
 }
