@@ -44,30 +44,36 @@ public class MutiRouteStrategy implements RoutingStrategy {
             }
         }
 
-        // BFS to explore all possible routes
+        Set<Integer> visited = new HashSet<>();  // Set to keep track of visited states
+
         while (!queue.isEmpty()) {
             StateNode current = queue.poll();
             Integer currentState = current.stateCode;
             List<Trip> currentRoute = current.trips;
 
-            // If the destination is reached, add the route to the list of valid routes
             if (currentState.equals(destinationStateCode)) {
                 allRoutes.add(currentRoute);
                 continue;
             }
 
-            // Explore all trips from the current state
+            if (visited.contains(currentState)) {
+                continue;
+            }
+
+            visited.add(currentState);
+
             if (tripMap.containsKey(currentState)) {
                 for (Trip nextTrip : tripMap.get(currentState)) {
-                    // Create a new route by adding the next trip to the current route
                     List<Trip> newRoute = new ArrayList<>(currentRoute);
                     newRoute.add(nextTrip);
-                    queue.add(new StateNode(nextTrip.getDestination().getStateCode(), newRoute));
+
+                    if (!visited.contains(nextTrip.getDestination().getStateCode())) {
+                        queue.add(new StateNode(nextTrip.getDestination().getStateCode(), newRoute));
+                    }
                 }
             }
         }
 
-        // Return the first valid route found, or null if no route exists
         return allRoutes.isEmpty() ? null : allRoutes;
     }
 }
