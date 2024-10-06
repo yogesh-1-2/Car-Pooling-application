@@ -9,6 +9,7 @@ public class TripExceptions {
     private final String TRIP_VEHICLE_NOT_EXIST = "Trip vehicle number : %s doesn't belong to user";
     private final String TRIP_WRONG_ACCESS = "Access denied";
     private final String TRIP_INVALID_STATE_FOUND = "Trip invalid state: %s found";
+    private final String TRIP_VEHICLE_ALREADY_IN_USE = "Trip vehicle %s already in user";
 
     public static class TripNotFoundException extends RuntimeException {
         public TripNotFoundException() {
@@ -37,6 +38,12 @@ public class TripExceptions {
     public static class TripWrongVehicle extends RuntimeException {
         public TripWrongVehicle(String state) {
             super(String.format(TRIP_VEHICLE_NOT_EXIST, state));
+        }
+    }
+
+    public static class TripVehicleAlreadyInUse extends RuntimeException {
+        public TripVehicleAlreadyInUse(String vehicleNumber) {
+            super(String.format(TRIP_VEHICLE_ALREADY_IN_USE, vehicleNumber));
         }
     }
 

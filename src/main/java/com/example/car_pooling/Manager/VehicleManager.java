@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Objects;
 
 @Component
 public class VehicleManager {
@@ -19,6 +20,10 @@ public class VehicleManager {
     private UserResourceManager userResourceManager;
 
     public void registerVehicle(Vehicle vehicle) {
+        Vehicle existingVehicle = vehicleRepository.getVehicleByNumber(vehicle.getVehicleNumber());
+        if (Objects.nonNull(existingVehicle)) {
+            vehicle.setId(existingVehicle.getId());
+        }
         vehicleRepository.addVehicle(vehicle);
     }
 
@@ -28,4 +33,7 @@ public class VehicleManager {
         return vehicleRepository.getVehicles(vehicleIds);
     }
 
+    public Vehicle getVehicleByNumber(String vehicleNumber){
+        return vehicleRepository.getVehicleByNumber(vehicleNumber);
+    }
 }

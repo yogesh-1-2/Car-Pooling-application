@@ -26,4 +26,8 @@ public class UserManager {
     public List<User> getAllUsers() {
         return userRepository.getUsers();
     }
+
+    public User getUserById(Integer userId) {
+        return userRepository.getUserById(userId);
+    }
 }

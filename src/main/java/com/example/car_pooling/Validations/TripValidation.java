@@ -10,6 +10,7 @@ import lombok.experimental.UtilityClass;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Objects;
 
 @Component
@@ -20,6 +21,25 @@ public class TripValidation {
 
     @Autowired
     private TripManager tripManager;
+
+    public void validateTrip(Integer tripId) {
+        if (Objects.isNull(tripId)) {
+            throw new TripExceptions.TripNotFoundException();
+        }
+
+        Trip trip = tripManager.getTripById(tripId);
+        if (Objects.isNull(trip)) {
+            throw new TripExceptions.TripNotFoundException();
+        }
+    }
+
+    public void validateTrip(List<Integer> tripIds) {
+        if (Objects.isNull(tripIds)) {
+            throw new TripExceptions.TripNotFoundException();
+        }
+
+        tripIds.forEach(this::validateTrip);
+    }
 
     public void validateTrip(Trip trip) {
         if (Objects.isNull(trip)) {
@@ -46,6 +66,14 @@ public class TripValidation {
         Integer userId = userResourceManager.getUserIdByAssetId(trip.getVehicleNumber());
         if (Boolean.FALSE.equals(ownerId.equals(userId))) {
             throw new TripExceptions.TripWrongVehicle(trip.getVehicleNumber());
+        }
+
+        List<Trip> trips = tripManager.getActiveTripsByOrignDest(trip.getOrigin().getStateCode(), trip.getDestination().getStateCode());
+        for (Trip existingTrip : trips) {
+            if (Objects.isNull(existingTrip.getEndTime()) &&
+                    Objects.equals(existingTrip.getVehicleNumber(), trip.getVehicleNumber())) {
+                    throw new TripExceptions.TripVehicleAlreadyInUse(trip.getVehicleNumber());
+            }
         }
     }
 

@@ -1,5 +1,6 @@
 package com.example.car_pooling.Controller;
 
+import com.example.car_pooling.Entities.Enums.TripSelectionEnums;
 import com.example.car_pooling.Entities.Trip;
 import com.example.car_pooling.Service.TripService;
 import com.example.car_pooling.Validations.TripValidation;
@@ -35,6 +36,18 @@ public class TripController {
 
     @GetMapping("")
     public ResponseEntity<List<Trip>> getAllTrips(@RequestParam Integer userId) {
+        //need to change to get trips booked by user
         return new ResponseEntity<>(tripService.getAllTripByUserId(userId), HttpStatus.OK);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<Trip>> getTrip(
+            @RequestParam Integer originState,
+            @RequestParam Integer destinationState,
+            @RequestParam TripSelectionEnums tripSelectionStrategy,
+            @RequestParam Integer seatsRequired,
+            @RequestParam(required = false) String vehicleType) {
+
+        return new ResponseEntity<>(tripService.searchTrip(originState, destinationState, tripSelectionStrategy, vehicleType, seatsRequired), HttpStatus.OK);
     }
 }
